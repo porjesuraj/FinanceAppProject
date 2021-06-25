@@ -64,6 +64,7 @@ namespace FinanceApp.ViewModels
         {
             try
             {
+               
                 // ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
 
                // ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;

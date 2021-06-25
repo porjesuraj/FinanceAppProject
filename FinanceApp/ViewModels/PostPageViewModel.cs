@@ -1,4 +1,5 @@
 ﻿using FinanceApp.Models;
+using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -29,28 +30,55 @@ namespace FinanceApp.ViewModels
         public override void Initialize(INavigationParameters parameters)
         {
             base.Initialize(parameters);
-           // Item item = null;
-            try
-            {
-               
-               var item = parameters.GetValue<Item>("items");
 
-                Items = item.ItemLink;
-                throw (new Exception("Unable to load blogs"));
-
-            }
-            catch (Exception ex)
-            {
-                var properties = new Dictionary<string, string>
-                {
-                    { "Blog_Post", "item.Title" }
-                };
-
-                Crashes.TrackError(ex,properties);
-            }
-
+           // throw (new Exception("in post page"));
            
+
+            // Item item = null;
+           try
+             {
+
+                var item = parameters.GetValue<Item>("items");
+
+                 Items = item.ItemLink;
+
+                 var properties = new Dictionary<string, string>
+                 {
+                     {"Blog_Post",$"{item.Title}" }
+                 };
+                 string eventName = "Blog_Post_Opened";
+
+                AppCenterHelper.TrackEvent(eventName,properties);
+                // Analytics.TrackEvent("Blog_Post_Opened",properties);
+
+               //  throw (new Exception("Unable to load blogs"));
+
+             }
+             catch (Exception ex)
+             {
+                 var properties = new Dictionary<string, string>
+                 {
+                     { "Blog_Post", "item.Title" }
+                 };
+
+                 // Crashes.TrackError(ex,properties);
+
+                 AppCenterHelper.TrackError(ex, properties);
+             }
+
+
         }
+
+/*        private async void TrackEvent(string eventName,Dictionary<string, string> properties)
+        {
+            if(await Analytics.IsEnabledAsync())
+            {
+                Analytics.TrackEvent(eventName, properties);
+
+            }
+        }
+*/
+
 
     }
 }
