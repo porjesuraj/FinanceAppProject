@@ -1,5 +1,7 @@
 using FinanceApp.ViewModels;
 using FinanceApp.Views;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Crashes;
 using Prism;
 using Prism.Ioc;
 using Xamarin.Essentials.Implementation;
@@ -18,6 +20,11 @@ namespace FinanceApp
         protected override async void OnInitialized()
         {
             InitializeComponent();
+
+            string androidAppSecret = "a96940b8-abc3-441a-af4e-0398931021dd";
+          //  string iOSAppSecret = "";
+
+            AppCenter.Start($"android={androidAppSecret}",typeof(Crashes));
 
             await NavigationService.NavigateAsync("NavigationPage/MainPage");
         }

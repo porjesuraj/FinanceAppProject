@@ -1,4 +1,5 @@
 ﻿using FinanceApp.Models;
+using Microsoft.AppCenter.Crashes;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -28,10 +29,27 @@ namespace FinanceApp.ViewModels
         public override void Initialize(INavigationParameters parameters)
         {
             base.Initialize(parameters);
+           // Item item = null;
+            try
+            {
+               
+               var item = parameters.GetValue<Item>("items");
 
-            var items = parameters.GetValue<Item>("items");
+                Items = item.ItemLink;
+                throw (new Exception("Unable to load blogs"));
 
-            Items = items.ItemLink;
+            }
+            catch (Exception ex)
+            {
+                var properties = new Dictionary<string, string>
+                {
+                    { "Blog_Post", "item.Title" }
+                };
+
+                Crashes.TrackError(ex,properties);
+            }
+
+           
         }
 
     }
